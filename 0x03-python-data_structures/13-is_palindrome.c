@@ -1,51 +1,31 @@
 #include "lists.h"
-#include <stdlib.h>
-#include <stdio.h>
-/*
- * is_palindrome - function with one argument
- * @head: pointer to linked list
- *
- * Description: check if value singly linked list is palindrome
- * Return: 1 if true or 0 if false
+
+/**
+ * is_palindrome - function to call check_pal to see if list is palindrome
+ * @head: ptr to the beginning of the list
+ * Return: 0 if not palindrome else 1
  */
 int is_palindrome(listint_t **head)
 {
-	listint_t *ptr;
-	int count = 0, count2 = 0, half;
-	int *buf = NULL;
-
-	if (!head)
-	      return (0);
-	if (!*head)
+	if (head == NULL || *head == NULL)
 		return (1);
-	ptr = *head;
-	while (ptr && ptr->next)
-	{
-		ptr = ptr->next;
-		count++;
-	}
-	buf = malloc(sizeof(int) * count);
-	if (!buf)
-		return (0);
+	return (check_pal(head, *head));
+}
 
-	ptr = *head;
-	count = 0;
-	while (ptr)
+/**
+ * check_pal - function to check if the list is palindrome
+ * @head: ptr to the beginning of the list
+ * @last: ptr to the end of the list
+ * Return: 0 if not palindrom else 1
+ */
+int check_pal(listint_t **head, listint_t *last)
+{
+	if (last == NULL)
+		return (1);
+	if (check_pal(head, last->next) && (*head)->n == last->n)
 	{
-		buf[count] = ptr->n;
-		count++;
-		ptr = ptr->next;
+		*head = (*head)->next;
+		return (1);
 	}
-	half = count / 2;
-
-	while (half)
-	{
-		if (buf[count2] != buf[count - 1])
-			return (0);
-		half--;
-		count2++;
-		count--;
-	}
-	free(buf);
-	return (1);
+	return (0);
 }
