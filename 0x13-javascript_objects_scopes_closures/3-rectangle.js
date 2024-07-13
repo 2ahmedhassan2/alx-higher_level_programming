@@ -1,21 +1,22 @@
 #!/usr/bin/node
-// Define a class Rectangle
-
-class Rectangle {
-    constructor(w, h) {
-	if (Number.isInteger(w) && w > 0 && Number.isInteger(h) && h > 0) {
-	    this.width = w;
-	    this.height = h;
-	}
+module.exports = class Rectangle {
+  constructor (w, h) {
+    if (h > 0 && w > 0) {
+      this.width = w;
+      this.height = h;
     }
+  }
 
-    print() {
-	if (this.width && this.height) {
-	    for (let i = 0; i < this.height; i++) {
-		console.log('X'.repeat(this.width));
-	    }
-	}
+  print () {
+    let str1 = '';
+    let i;
+    let j;
+    for (i = 0; i < this.height; i++) {
+      for (j = 0; j < this.width; j++) {
+        str1 += 'X';
+      }
+      console.log(str1);
+      str1 = '';
     }
-}
-
-module.exports = Rectangle;
+  }
+};
