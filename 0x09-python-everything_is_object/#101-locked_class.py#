@@ -1,5 +1,0 @@
-# a locked class."""
-class LockedClass:
-    """
-    Pr"""
-    __ slot__ = ["first_name"]
