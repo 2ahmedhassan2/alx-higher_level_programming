@@ -1,36 +1,26 @@
 #!/usr/bin/node
 
 const request = require('request');
+const movieId = require('process').argv[2];
 
-if (process.argv.length < 3) {
-  console.log('Usage: ./101-starwars_characters.js <Movie ID>');
-  process.exit(1);
+function fetchData (URL) {
+  return new Promise((resolve, reject) => {
+    request(URL, (err, res, data) => {
+      if (err) {
+        reject(err);
+      }
+      resolve(JSON.parse(data));
+    });
+  });
 }
 
-const movieId = process.argv[2];
-const apiUrl = `https://swapi.dev/api/films/${movieId}/`;
+async function getMovieCharacters (url) {
+  const cUrls = await fetchData(url);
+  //   links = cUrls.results.map((data)=> data.characters);
+  for (const cUrl of cUrls.characters) {
+    const c = await fetchData(cUrl);
+    console.log(c.name);
+  }
+}
 
-request(apiUrl, (error, response, body) => {
-  if (error) {
-    console.error('Error fetching movie:', error);
-    return;
-  }
-  if (response.statusCode === 200) {
-    const data = JSON.parse(body);
-    const characters = data.characters;
-    characters.forEach((characterUrl) => {
-      request(characterUrl, (charError, charResponse, charBody) => {
-        if (charError) {
-          console.error('Error fetching character:', charError);
-          return;
-        }
-        if (charResponse.statusCode === 200) {
-          const charData = JSON.parse(charBody);
-          console.log(charData.name);
-        }
-      });
-    });
-  } else {
-    console.error('Failed to fetch movie data. Status code:', response.statusCode);
-  }
-});
+getMovieCharacters(`https://swapi-api.alx-tools.com/api/films/${movieId}`);
